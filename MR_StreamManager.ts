@@ -4,7 +4,9 @@ require('dotenv').config();
 
 const discord = "https://discord.com/invite/TD8Dcsb";
 const github = "https://github.com/DevSamuelV";
-let project_name = "Twitch Bot Called Mr Stream Manager";
+let project_name = "a Twitch Bot Called Mr Stream Manager";
+
+
 
 const client = tmi.Client({
     connection: {
@@ -46,7 +48,7 @@ client.on('chat', (channel, user, message) => {
             break;
 
         case "!project":
-            client.say(channel, `Samuel is working on a project called ${project_name}`);
+            client.say(channel, `Samuel is working on ${project_name}`);
             break;
     }
 })
