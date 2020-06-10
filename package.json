@@ -1,0 +1,19 @@
+{
+    "name": "MR_StreamManager",
+    "version": "1.0.0",
+    "description": "",
+    "main": "MR_StreamManager.js",
+    "scripts": {
+        "start": "tsc -w",
+        "test": "node ."
+    },
+    "author": "DevSamuelV",
+    "license": "MIT",
+    "dependencies": {
+        "@types/tmi.js": "^1.4.0",
+        "dotenv": "^8.2.0",
+        "tmi.js": "^1.5.0",
+        "twitch": "^4.0.10",
+        "twitch-chat-client": "^4.0.10"
+    }
+}
