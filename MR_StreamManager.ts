@@ -64,6 +64,15 @@ client.on('chat', (channel, user, message) => {
         case "!project":
             client.say(channel, `Samuel is working on ${project.name} also the project github ${project.github}`);
             break;
+
+        case '!color':
+            var colors = ["blue", "red", "green", "Firebrick", "DodgerBlue", "CadetBlue", "OrangeRed", "HotPink"];
+
+            var color_num = (Math.floor(Math.random() * Math.max(8)));
+
+            client.color(colors[color_num]);
+            client.say(channel, `Bot Color Changed to ${colors[color_num]}`);
+            break;
     }
 })
 
