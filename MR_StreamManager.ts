@@ -1,10 +1,19 @@
 import * as tmi from 'tmi.js';
+import * as firebase from 'firebase';
 import { Client } from 'discord.js';
 import * as fs from 'fs';
 
 require('dotenv').config();
+firebase.initializeApp({
+    apiKey: process.env.apiKey,
+    authDomain: process.env.authDomain,
+    databaseURL: process.env.databaseURL,
+    projectId: process.env.projectId,
+    storageBucket: process.env.messagingSenderId,
+    appId: process.env.appId
+})
 
-const discord_bot = new Client();
+const firestore = firebase.firestore();
 const discord = "https://discord.com/invite/TD8Dcsb";
 const github = "https://github.com/DevSamuelV";
 const project = {
@@ -70,6 +79,16 @@ client.on('subgift', (channel, username, streak, recipients, methods, userstate)
     }
 
     client.say(channel, `${username} your crazy for the gifted subs`);
+
+    var data = {
+        username: username,
+        streak: streak,
+        recipients: recipients
+    }
+
+    firestore.collection('subgift').add(data).catch((err) => {
+        console.error(err);
+    })
 })
 
 client.on('hosting', (channel, user, viewCount) => {
@@ -87,4 +106,19 @@ client.on('cheer', (channel, userState, message) => {
     }
 
     client.say(channel, `Thanks ${userState.username} for the ${userState.bits} bits!!`);
+
+    var data = {
+        username: userState.username,
+        message: message
+    }
+
+    firestore.collection('subgift').add(data).catch((err) => {
+        console.error(err);
+    })
+})
+
+client.on('raided', (channel, username, viewCount) => {
+    client.vip(channel, username);
+
+    client.say(channel, `${username} your crazy for raiding with ${viewCount} viewers.`);
 })
