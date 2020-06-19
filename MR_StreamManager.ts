@@ -13,7 +13,13 @@ firebase.initializeApp({
     appId: process.env.appId
 })
 
+const connected_channels = {
+    SamuelTheBoi: "SamuelTheBoi",
+    CodedToGame: "codedtogame"
+}
+
 const firestore = firebase.firestore();
+const discord_2 = "https://discord.gg/rpkp3Tc";
 const discord = "https://discord.com/invite/TD8Dcsb";
 const github = "https://github.com/DevSamuelV";
 const project = {
@@ -27,7 +33,7 @@ const client = tmi.Client({
         secure: true,
     },
 
-    channels: ["samueltheboi"],
+    channels: [connected_channels.SamuelTheBoi, connected_channels.CodedToGame],
 
     identity: {
         username: "MrStreamManager",
@@ -43,42 +49,87 @@ const client = tmi.Client({
 console.log(client.connect());
 
 client.on('chat', (channel, user, message) => {
-    switch(message) {
-        case "!help":
-            client.say(channel, "Available Commands !discord, !github, !dice, !project");
+    switch (channel) {
+        case connected_channels.CodedToGame:
+            // * for the coded to game stream
+            switch (message) {
+                case '!color':
+                    var colors = ["blue", "red", "green", "Firebrick", "DodgerBlue", "CadetBlue", "OrangeRed", "HotPink"];
+
+                    var color_num = (Math.floor(Math.random() * Math.max(8)));
+
+                    client.color(colors[color_num]);
+                    client.say(channel, `Bot Color Changed to ${colors[color_num]}`);
+                    break;
+
+                case '!game':
+                    client.say(channel, `Crew and Sam are Playing Minecraft`);
+                    break;
+
+                case "!discord":
+                    client.say(channel, `Here is the discord ${discord_2} ${user.username}`); 
+                    break;
+            }
             break;
 
-        case "!discord":
-            client.say(channel, `Here is the discord ${discord} ${user.username}`);
+        case connected_channels.SamuelTheBoi:
+            // * for samueltheboi stream
+            switch (message) {
+                case "!help":
+                    client.say(channel, "Available Commands !discord, !github, !dice, !project");
+                    break;
+
+                case "!discord":
+                    client.say(channel, `Here is the discord ${discord} ${user.username}`);
+                    break;
+
+                case '!dice':
+                    const num = (Math.floor(Math.random() * 6) + 1);
+                    client.say(channel, `${user.username} you rolled a ${num}`);
+                    break;
+
+                case '!github':
+                    client.say(channel, github);
+                    break;
+
+                case "!project":
+                    client.say(channel, `Samuel is working on ${project.name} also the project github ${project.github}`);
+                    break;
+
+                case '!color':
+                    var colors = ["blue", "red", "green", "Firebrick", "DodgerBlue", "CadetBlue", "OrangeRed", "HotPink"];
+
+                    var color_num = (Math.floor(Math.random() * Math.max(8)));
+
+                    client.color(colors[color_num]);
+                    client.say(channel, `Bot Color Changed to ${colors[color_num]}`);
+                    break;
+
+                case '!ban':
+                    if (user.mod === true) {
+                        var input = message.split(' ')[1];
+                        if (input.length < 2) return;
+                        client.say(channel, `User ${input} was banned`);
+                    }
+                    break;
+            }
             break;
 
-        case '!dice':
-            const num = (Math.floor(Math.random() * 6) + 1);
-            client.say(channel, `${user.username} you rolled a ${num}`);
-            break;
-
-        case '!github':
-            client.say(channel, github);
-            break;
-
-        case "!project":
-            client.say(channel, `Samuel is working on ${project.name} also the project github ${project.github}`);
-            break;
-
-        case '!color':
-            var colors = ["blue", "red", "green", "Firebrick", "DodgerBlue", "CadetBlue", "OrangeRed", "HotPink"];
-
-            var color_num = (Math.floor(Math.random() * Math.max(8)));
-
-            client.color(colors[color_num]);
-            client.say(channel, `Bot Color Changed to ${colors[color_num]}`);
+        default:
+            console.log("Channel Error <" + channel + ">")
             break;
     }
+
+
 })
 
 client.once('chat', (channel, user, message) => {
-    if (message.includes("working on") || message.includes("is this")) {
-        client.say(channel, `Samuel is working on ${project.name} also the project github ${project.github}`);
+    switch (channel) {
+        case connected_channels.SamuelTheBoi:
+            if (message.includes("working on") || message.includes("is this")) {
+                client.say(channel, `Samuel is working on ${project.name} also the project github ${project.github}`);
+            }
+            break;
     }
 })
 
