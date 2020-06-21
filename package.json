@@ -4,8 +4,7 @@
     "description": "",
     "main": "MR_StreamManager.js",
     "scripts": {
-        "start": "tsc -w",
-        "test": "node ."
+        "start": "tsc MR_StreamManager.ts & node MR_StreamManager.js"
     },
     "author": "DevSamuelV",
     "license": "MIT",
