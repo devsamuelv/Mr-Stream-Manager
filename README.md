@@ -16,5 +16,5 @@
 ## Contributors
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/adilanchian"><img src="https://avatars2.githubusercontent.com/u/52802289?s=400&u=e2816f26e0a134f3b00ba0305cff5407092093ac&v=4" width="100px;" alt=""/><br /><sub><b>Samuel Villegas</b></sub></a><br /><a href="https://github.com/DevSamuelV/Mr-Stream-Manager/commits?author=devsamuelv" title="Code">💻</a> <a href="https://github.com/DevSamuelV/Mr-Stream-Manager/commits?author=devsamuelv" title="Tests">⚠️</a> <a href="https://github.com/DevSamuelV/Mr-Stream-Manager/commits?author=devsamuelv" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/DevSamuelV"><img src="https://avatars2.githubusercontent.com/u/52802289?s=400&u=e2816f26e0a134f3b00ba0305cff5407092093ac&v=4" width="100px;" alt=""/><br /><sub><b>Samuel Villegas</b></sub></a><br /><a href="https://github.com/DevSamuelV/Mr-Stream-Manager/commits?author=devsamuelv" title="Code">💻</a> <a href="https://github.com/DevSamuelV/Mr-Stream-Manager/commits?author=devsamuelv" title="Tests">⚠️</a> <a href="https://github.com/DevSamuelV/Mr-Stream-Manager/commits?author=devsamuelv" title="Documentation">📖</a></td>
 </table>
