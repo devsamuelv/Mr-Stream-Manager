@@ -173,6 +173,7 @@ client.on('chat', (channel, user, message) => {
     if (message.includes('!revert-cmd') && user.username == "samueltheboi") {
         project.full_name = project.default_name;
         client.say(channel, '!Project Reverted Successfully!');
+        return;
     }
     // 👨‍💻Calulating volume of an object in python👨‍💻 | !project | !help
 })
