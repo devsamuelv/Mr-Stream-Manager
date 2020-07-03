@@ -4,12 +4,13 @@
     "description": "",
     "main": "MR_StreamManager.js",
     "scripts": {
-        "start": "tsc MR_StreamManager.ts & node MR_StreamManager.js"
+        "start": "tsc MR_StreamManager.ts | node MR_StreamManager.js"
     },
     "author": "DevSamuelV",
     "license": "MIT",
     "dependencies": {
         "@types/tmi.js": "^1.4.0",
+        "discord.js": "^12.2.0",
         "dotenv": "^8.2.0",
         "firebase": "^7.15.0",
         "tmi.js": "^1.5.0",

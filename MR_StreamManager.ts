@@ -1,17 +1,10 @@
 import * as tmi from 'tmi.js';
-import * as firebase from 'firebase';
 import { Client } from 'discord.js';
 import * as fs from 'fs';
 
 require('dotenv').config();
-firebase.initializeApp({
-    apiKey: process.env.apiKey,
-    authDomain: process.env.authDomain,
-    databaseURL: process.env.databaseURL,
-    projectId: process.env.projectId,
-    storageBucket: process.env.messagingSenderId,
-    appId: process.env.appId
-})
+
+const bot = new Client();
 
 const connected_channels = {
     SamuelTheBoi: "SamuelTheBoi",
@@ -31,14 +24,18 @@ const channelInfo = {
 
     github: {
         samueltheboi: "https://github.com/DevSamuelV"
+    },
+
+    twitter: {
+        SamuelTheBoi: "https://twitter.com/DevSamuel9"
     }
 }
 
-const firestore = firebase.firestore();
-
 const project = {
     github: "https://github.com/DevSamuelV/Mr-Stream-Manager",
-    name: "a Twitch Bot Called Mr Stream Manager aka me."
+    name: "a Twitch Bot Called Mr Stream Manager aka me.",
+    full_name: "Samuel is working on a Twitch Bot Called Mr Stream Manager aka me. also the project github https://github.com/DevSamuelV/Mr-Stream-Manager",
+    default_name:  "Samuel is working on a Twitch Bot Called Mr Stream Manager aka me. also the project github https://github.com/DevSamuelV/Mr-Stream-Manager"
 }
 
 const client = tmi.Client({
@@ -75,6 +72,20 @@ client.on('chat', (channel, user, message) => {
                 client.color(colors[color_num]);
                 client.say(channel, `Bot Color Changed to ${colors[color_num]}`);
                 break;
+
+            case '!ban':
+                const messageContent = message.split('ban');
+
+                const username = messageContent[1];
+                const banReason = messageContent[2];
+
+                client.ban(channel, username, banReason).then(() => {
+                    client.say(channel, `${username} was banned for ${banReason}`);
+                }).catch((err) => {
+                    client.say(channel, `BOT ERROR: ${err}`);
+                    console.error(err);
+                })
+                break;
         }
     }
 
@@ -93,12 +104,12 @@ client.on('chat', (channel, user, message) => {
                 client.say(channel, `${user.username} you rolled a ${num}`);
                 break;
 
-            // case '!github':
-            //     client.say(channel, channelInfo.github.samueltheboi);
-            //     break;
+            case '!twitter':
+                client.say(channel, channelInfo.twitter.SamuelTheBoi);
+                break;
 
             case "!project":
-                client.say(channel, `Samuel is working on ${project.name} also the project github ${project.github}`);
+                client.say(channel, project.full_name);
                 break;
 
             case '!color':
@@ -137,14 +148,33 @@ client.on('join', (channel, username, isSelf) => {
 })
 
 // user chatting
-client.once('chat', (channel, user, message) => {
-    if (message.includes("working on") || message.includes("is this") || message.includes("whats this") || message.includes("how does it work")) {
-        client.say(channel, `Samuel is working on ${project.name} also the project github ${project.github}`);
+client.on('chat', (channel, user, message) => {
+    if (message.includes("working on") && user["display-name"] != "MrStreamManager" || message.includes("is this") && user["display-name"] != "MrStreamManager" || message.includes("whats this") && user["display-name"] != "MrStreamManager" || message.includes("how does it work") && user["display-name"] != "MrStreamManager") {
+        client.say(channel, project.full_name);
     }
 
-    if (message.toLowerCase().includes("hello")) {
+    if (message.toLowerCase().includes("hello") && user["display-name"] != "MrStreamManager") {
         client.say(channel, `Hello ${user.username} welcome to the stream KappaPride`);
     }
+
+    if (message.includes('!set-cmd') && user.username == "samueltheboi") {
+        var message_args = message.split(' ');
+        var command_content = message.substr(17);
+
+        if (message_args[1] != '!project') { client.say(channel, 'Commands that can be reset are !project'); return; }
+        if (message_args[2].length == 0) { client.say(channel, 'Please specify message content'); return; }
+
+        project.full_name = command_content;
+
+        client.say(channel, "!Project output Updated!");
+        console.log(project.name);
+    }
+
+    if (message.includes('!revert-cmd') && user.username == "samueltheboi") {
+        project.full_name = project.default_name;
+        client.say(channel, '!Project Reverted Successfully!');
+    }
+    // 👨‍💻Calulating volume of an object in python👨‍💻 | !project | !help
 })
 
 client.on('subgift', (channel, username, streak, recipients, methods, userstate) => {
@@ -159,10 +189,12 @@ client.on('subgift', (channel, username, streak, recipients, methods, userstate)
         streak: streak,
         recipients: recipients
     }
+})
 
-    firestore.collection('subgift').add(data).catch((err) => {
-        console.error(err);
-    })
+client.on('resub', (channel, username, months) => {
+    if (channel.includes("samueltheboi")) {
+        client.say(channel, `twitchRaid Thanks ${username} for resubbing for ${months} twitchRaid`);
+    }
 })
 
 client.on('hosting', (channel, user, viewCount) => {
@@ -170,25 +202,16 @@ client.on('hosting', (channel, user, viewCount) => {
 })
 
 client.once('ban', (channel, user, reason) => {
-    client.say(channel, `${user} was banned`);
+    client.say(channel, `${user} was banned for ${reason}`);
 })
 
-client.on('cheer', (channel, userState, message) => {
+client.on('cheer', (channel, userState) => {
     if (Number(userState.bits) < 500) {
         // @ts-ignore
         client.vip(channel, userState.username);
     }
 
     client.say(channel, `Thanks ${userState.username} for the ${userState.bits} bits!!`);
-
-    // var data = {
-    //     username: userState.username,
-    //     message: message
-    // }
-
-    // firestore.collection('subgift').add(data).catch((err) => {
-    //     console.error(err);
-    // })
 })
 
 client.on('raided', (channel, username, viewCount) => {
@@ -200,3 +223,24 @@ client.on('raided', (channel, username, viewCount) => {
 function parseChannelName(channelName: string) {
     return channelName.split("#")[1];
 }
+
+
+// * discord bot section
+
+const botPrefix = "&";
+
+bot.on('message', (message) => {
+    const cmd = message.content.split(botPrefix)[1];
+
+    switch (cmd) {
+        case 'github':
+            message.channel.send(`Here is Sam's Github ${channelInfo.github.samueltheboi}`);
+            break;
+
+        case 'twitter':
+            message.channel.send(`Here is Sam's Twitter ${channelInfo.twitter.SamuelTheBoi}`)
+            break;
+    }
+})
+
+bot.login(process.env.DISCORD_TOKEN);
