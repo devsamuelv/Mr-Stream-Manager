@@ -153,7 +153,7 @@ client.on('join', (channel, username, isSelf) => {
             break;
 
         case 'AlbertOverbuild':
-            client.say(channel, `twitchRaid PJSalt PJSalt Lookout ${username} has joined twitchRaid PJSalt PJSalt`);
+            client.say(channel, `twitchRaid twitchRaid twitchRaid Lookout ${username} has joined twitchRaid twitchRaid twitchRaid`);
             break;
     }
 })
@@ -210,6 +210,10 @@ client.on('resub', (channel, username, months) => {
 
 client.on('hosting', (channel, user, viewCount) => {
     client.say(channel, `Thanks ${user} for hosting with ${viewCount} views.`);
+})
+
+client.on('timeout', (channel, username, reason, duration) => {
+    client.say(channel, `${username} is timeout for ${duration}, because of ${reason}`);
 })
 
 client.once('ban', (channel, user, reason) => {
