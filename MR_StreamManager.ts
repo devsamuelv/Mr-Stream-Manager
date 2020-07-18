@@ -38,6 +38,13 @@ const project = {
     default_name:  "Samuel is working on a Twitch Bot Called Mr Stream Manager aka me. also the project github https://github.com/DevSamuelV/Mr-Stream-Manager"
 }
 
+const vscodeInfo = {
+    theme: 'One Monokai',
+    font: "Consolas",
+    fontSize: 15,
+    iconTheme: "material icon theme"
+}
+
 const client = tmi.Client({
     connection: {
         reconnect: true,
@@ -112,6 +119,10 @@ client.on('chat', (channel, user, message) => {
                 client.say(channel, project.full_name);
                 break;
 
+            case '!theme':
+                client.say(channel, `Colors Theme is ${vscodeInfo.theme} and the icon theme is ${vscodeInfo.iconTheme}`);
+                break;
+
             case '!color':
                 var colors = ["blue", "red", "green", "Firebrick", "DodgerBlue", "CadetBlue", "OrangeRed", "HotPink"];
 
@@ -173,7 +184,6 @@ client.on('chat', (channel, user, message) => {
     if (message.includes('!revert-cmd') && user.username == "samueltheboi") {
         project.full_name = project.default_name;
         client.say(channel, '!Project Reverted Successfully!');
-        return;
     }
     // 👨‍💻Calulating volume of an object in python👨‍💻 | !project | !help
 })

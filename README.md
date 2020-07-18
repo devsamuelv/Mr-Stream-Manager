@@ -9,9 +9,8 @@
     - [X] and message checking for what are you working on
     - [X] add cheer alerts 
     - [X] add gift sub alerts
-
-- **Features To Add later**
-    - [ ] Multi Channel Support
+    - [ ] command to add commands
+    - [ ] Multi Channel Support 
 
 ## Contributors
 <table>
